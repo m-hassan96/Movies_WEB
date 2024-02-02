@@ -20,7 +20,7 @@ function insertRecord() {
 				((i = $i - 1))
 			else
 				echo -n $data";" >>./mydb/$database/$table_name	#to print record
-        echo '-----------------------------------------'
+        echo '-----------------------------------------' 
 			fi
 		done
 		echo $'\n' >>./mydb/$database/$table_name #end of record
