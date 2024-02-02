@@ -1,37 +1,43 @@
+##!usr/bin/bash
 
-# Choosing an option ( Home page / Starting menu )
-PS3='- Choose an option >> '
+# Get the path of the script itself
+parentDir="$(dirname "$0")"
 
-echo "-----------------------------"    
+echo "PATH=$PATH:$parentDir">> ~/.bashrc
+cd $parentDir
+
+# Choosing an option 
+PS3=' - Choose an option >> '
+
+echo "-----------------------------"
 echo $'\n << Welcome to our DBMS >>\n'
+echo $' << We love linux ^_^  >>\n'
 
-echo $'<< We love linux ^_^  >>\n'
-	select menu in 'Create DB' 'List DB' 'Connect To DB' 'Drop DB' 'Exit'
-	do
-		case $menu in
-		'Create DB')
-			source ./createDB.sh
-			;;
-		'List DB')
-			source ./listDB.sh
-			;;
-		'Connect To DB')
-			./listDB.sh
-			echo $' - These are the current database:-\n'
-			source ./connectDB.sh
-			;;
-		'Drop DB')
-			source ./listDB.sh
-			echo $' - These are the current database:- '
-			source ./dropDB.sh
-			;;
-		'Exit')
-			source ./exitScript.sh
-			;;
-		*)
-			echo "Not valid choice!"
-            ./startView.sh
-			;;
-		esac
-	done
-    echo $'\n'
+select menu in 'Create DB' 'List DB' 'Connect To DB' 'Drop DB' 'Exit'; do
+	case $menu in
+	'Create DB')
+		. ./scripts/createDB.sh
+		;;
+	'List DB')
+		. ./scripts/listDB.sh
+		;;
+	'Connect To DB')
+		. ./scripts/listDB.sh
+		. ./scripts/connectDB.sh
+		;;
+	'Drop DB')
+		. ./scripts/listDB.sh
+		. ./scripts/dropDB.sh
+		;;
+	'Exit')
+		. ./scripts/exitScript.sh
+		;;
+	*)
+		echo "-----------------------------"
+		echo " << Not valid option choice! >> "
+		echo "-----------------------------"
+		./startView.sh
+		;;
+	esac
+done
+echo $'\n'
