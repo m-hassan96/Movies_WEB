@@ -1,0 +1,26 @@
+/* Example CSS */
+
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .movie-card {
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+  }
+
+  .carousel-list{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+
+  #head {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-clip: contain;
+    height: 400px;
+}
