@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./MyCSS.css"
+import { LanguageContext } from '../../context/language';
 
 
 function Movie() {
@@ -11,22 +12,18 @@ function Movie() {
 
     const [movie, setMovie] = useState({});
 
-    const language = useSelector((state) => state.combineLang.lang)
-    const [page, setPage] = useState(1);
+    //const language = useSelector((state) => state.combineLang.lang)
 
-    const handelPages = (pageNum) => {
-        setPage(pageNum);
-    };
-
-
+    const { contextLang, setContextLang } = useContext(LanguageContext);
+    
     const dispatch = useDispatch();
     const moviePosterUrl = `https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`
 
     useEffect(() => {
-        axios.get(`https://api.themoviedb.org/3/movie/${movieId.id}?api_key=6883a4d02a15e877d54e507dbc703331&language=${language}`)
+        axios.get(`https://api.themoviedb.org/3/movie/${movieId.id}?api_key=6883a4d02a15e877d54e507dbc703331&language=${contextLang}`)
             .then((res) => setMovie(res.data))
             .catch((err) => console.log(err))
-    }, [language])
+    }, [contextLang])
 
     //movies from reducer
     const movieList = useSelector(state => state.combineFavorite.favorites);

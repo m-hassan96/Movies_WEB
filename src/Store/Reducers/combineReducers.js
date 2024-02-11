@@ -4,6 +4,7 @@ import loaderReducer from './LoaderReducer';
 import themeReducer from './ThemeReducer';
 import favoritesReducer from './FavoritesReducer';
 import searchReducer from './SearchReducer';
+import movieReducer from './MoviesReducer';
 
 export default combineReducers({
     // Add your reducers here.
@@ -11,5 +12,7 @@ export default combineReducers({
     combineTheme: themeReducer,
     combineLoader: loaderReducer,
     combineFavorite: favoritesReducer,
-    combineSearch: searchReducer
+    combineSearch: searchReducer,
+    combineMovie: movieReducer
+    
 })

@@ -1,18 +1,22 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { useSelector, useDispatch } from "react-redux";
 import MyCard from "../../Components/MyCard"
 import "./MyCSS.css"
 import MyCarousel from "../Carousel/Carousel"
-import { LanguageContext } from "../../context/language.js";
+import { getMoviesList } from "../../Store/Actions/MoviesAction.js";
+import { LanguageContext } from '../../context/language';
 
 function Home() {
 
+    const dispatch = useDispatch()
+
     const [Movies, setMovie] = useState([])
 
-    //const { contextLang } = useContext(LanguageContext);
+    //const language = useSelector((state) => state.combineLang.lang)
 
-    const language = useSelector((state) => state.combineLang.lang)
+    const { contextLang, setContextLang } = useContext(LanguageContext);
+
     const [page, setPage] = useState(1);
 
     const handelPages = (pageNum) => {
@@ -23,11 +27,15 @@ function Home() {
 
     useEffect(() => {
         //  axios.METHOD
-        axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=6883a4d02a15e877d54e507dbc703331&page=${page}&language=${language}`)
+        axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=6883a4d02a15e877d54e507dbc703331&page=${page}&language=${contextLang}`)
             .then((res) => setMovie(res.data.results))
             .catch((err) => console.log(err))
-    }, [page, language])
+    }, [page, contextLang])
 
+
+    useEffect(() => {
+        dispatch(getMoviesList())
+    }, [])
 
     return (
         <>

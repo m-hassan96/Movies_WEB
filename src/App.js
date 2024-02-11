@@ -13,39 +13,49 @@ import AboutUs from './Pages/AboutUs';
 import Search from './Pages/Search';
 import Test from './test'
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { LanguageContext } from '../src/context/language';
+import {  ThemeContext } from '../src/context/theme';
 
 function App() {
 
-  // get data 
-  const lang = useSelector((state) => state.combineLang.lang)
+  // const lang = useSelector((state) => state.combineLang.lang)
 
   // ltr --> left to right
   // rtl --> right to left
   const theme = useSelector((state) => state.combineTheme.theme)
 
+  const [contextLang, setContextLang] = useState("en")
+  const [contextTheme, setContextTheme] = useState("Dark")
+
   return (
-    <div dir={lang == "ar" ? "rtl" : "ltr"}
+    <div dir={contextLang === "ar" ? "rtl" : "ltr"}
 
-      className={theme == "Light" ? "bg-light" : "bg-dark"} >
-      <BrowserRouter>
+      className={contextTheme === "Light" ? "bg-light" : "bg-dark"} >
+      <LanguageContext.Provider value={{ contextLang, setContextLang }}>
+      <ThemeContext.Provider value={{ contextTheme, setContextTheme }}>
 
-        <Navbar />
-        <Switch>
+        <BrowserRouter>
 
-          <Route exact path={"/"} component={Home} />
-          <Route exact path={"/favorits"} component={Favorites} />
-          <Route exact path={"/MoviesDetelis/:id"} component={Movie} />
-          <Route exact path={"/aboutus"} component={AboutUs} />
-          <Route exact path={"/search"} component={Search} />
-          <Route exact path={"/test"} component={Test} />
-          <Route exact path={"/login"} component={Login} />
-          <Route exact path={"/signUp"} component={SignUp} />
+          <Navbar />
+          <Switch>
 
-          <Route path={"*"} component={NotFound} />
-        </Switch>
+            <Route exact path={"/"} component={Home} />
+            <Route exact path={"/favorits"} component={Favorites} />
+            <Route exact path={"/MoviesDetelis/:id"} component={Movie} />
+            <Route exact path={"/aboutus"} component={AboutUs} />
+            <Route exact path={"/search"} component={Search} />
+            <Route exact path={"/test"} component={Test} />
+            <Route exact path={"/login"} component={Login} />
+            <Route exact path={"/signUp"} component={SignUp} />
 
-        <MyFooter />
-      </BrowserRouter>
+            <Route path={"*"} component={NotFound} />
+          </Switch>
+
+          <MyFooter />
+        </BrowserRouter>
+      </ThemeContext.Provider>
+      </LanguageContext.Provider>
     </div>
   );
 }

@@ -8,7 +8,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { changeLang } from "../Store/Actions/LangAction";
 import { ThemeAction } from "../Store/Actions/ThemeAction";
 import { searchMovie } from "../Store/Actions/SearchAction";
-import { useEffect, useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
+import { LanguageContext } from '../context/language';
+import {  ThemeContext } from '../context/theme';
 
 function Navbar() {
 
@@ -17,17 +19,26 @@ function Navbar() {
     const dispatch = useDispatch()
 
     //& get  and set data for language
-    const language = useSelector((state) => state.combineLang.lang)
-
-    const changeCurrentLang = () => {
-        // to change in state in store => useDispatch
-        dispatch(changeLang(language === "ENG" ? "ARB" : "ENG"))
+    // const language = useSelector((state) => state.combineLang.lang)
+    const { contextLang, setContextLang } = useContext(LanguageContext);
+    const handelChangeLang = (e) => {
+        setContextLang(e.target.value)
     }
 
+    // const changeCurrentLang = () => {
+    //     // to change in state in store => useDispatch
+    //     dispatch(changeLang(language === "ENG" ? "ARB" : "ENG"))
+    // }
+
     //& get  and set data for theme
-    const myTheme = useSelector((state) => state.combineTheme.theme)
-    const changeCurrentTheme = () => {
-        dispatch(ThemeAction(myTheme === "Light" ? "Dark" : "Light"))
+    // const myTheme = useSelector((state) => state.combineTheme.theme)
+    // const changeCurrentTheme = () => {
+    //     dispatch(ThemeAction(myTheme === "Light" ? "Dark" : "Light"))
+    // }
+
+    const { contextTheme, setContextTheme } = useContext(ThemeContext);
+    const changeCurrentTheme = (e) => {
+        setContextTheme(contextTheme === "Light" ? "Dark" : "Light")
     }
 
     //& get  and set data for favorites
@@ -39,7 +50,7 @@ function Navbar() {
 
     useEffect(() => {
         dispatch({ type: "COUNTER", payload: favorites.length });
-    }, [favorites.length, language]);
+    }, [favorites.length, contextLang]);
 
 
     //& get  and set data for search
@@ -48,14 +59,6 @@ function Navbar() {
     const searchAboutMovie = (e) => {
         console.log(e.target.value);
         dispatch(searchMovie(myWord === "" ? e.target.value : e.target.value))
-    }
-
-    const handelChangeLang = (e) => {
-        dispatch({
-            type: "CHANGE_LANG",
-            payload: e.target.value
-        })
-        console.log(e.target.value);
     }
 
 
@@ -94,7 +97,7 @@ function Navbar() {
                         <i className="bi bi-brilliance bg-gray p-2 fs-5" style={{ "width": "45px", " height": "45px" }} ></i>
                         <div>
                             <p className="m-0">Your Theme</p>
-                            <p className="m-0 text-muted text-center">{myTheme}</p>
+                            <p className="m-0 text-muted text-center">{contextTheme}</p>
                         </div>
                     </li>
 
@@ -130,7 +133,8 @@ function Navbar() {
 
                         <div className="btn-group pe-3">
                             <li className='nav-item nav-item ps-sm-5 btn border-0'>
-                                <select className="form-select btn btn-outline-success  " aria-label="Default select example" value={language} onChange={(e) => handelChangeLang(e)} >
+                                <select className="form-select btn btn-outline-success  " aria-label="Default select example"
+                                    value={contextLang} onChange={(e) => handelChangeLang(e)} >
                                     <option value="en" >English</option>
                                     <option value="ar">Arabic</option>
                                     <option value="fr">French</option>
@@ -142,7 +146,7 @@ function Navbar() {
                         <form className="d-flex">
 
                             <input className="form-control mx-2 bg-secondary" onChange={searchAboutMovie}
-                             type="text" placeholder="Search" aria-label="Search" style={{ "width": "180px" }}></input>
+                                type="text" placeholder="Search" aria-label="Search" style={{ "width": "180px" }}></input>
 
                             <button type="button" className="btn btn-sm btn-outline-primary "
                                 aria-expanded="false" onClick={() => history.push("/search")}  > Search</button>
